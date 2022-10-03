@@ -1,0 +1,346 @@
+* {
+    box-sizing: border-box;
+    list-style: none;
+    font-family: 'Open Sans', sans-serif;
+    padding: 0px;
+    margin: 0px;
+    text-decoration: none;
+
+}
+
+ 
+
+.wrapper .container {
+    max-width: 1280px;
+    margin: 0px auto;
+    
+
+}
+
+
+
+
+.wrapper nav {
+   
+    font-weight: 1000;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2rem;
+    padding-top: 1.8rem;
+    padding-bottom: 1.8rem;     
+
+}
+
+
+.wrapper nav a {
+    padding: 0 10px;
+}
+
+.search{
+   border-right: 1.5px solid black;
+}
+.wrapper .banner {
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+
+
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+
+
+}
+
+.sunglasses {
+    width: 550px;
+    height: 200px;
+    background: url(https://kinhmateyeplus.com/wp-content/uploads/2020/05/kinh-ram.png);
+    background-size: cover;
+    position: relative;
+}
+
+.glasses {
+    background: url(https://kinhmateyeplus.com/wp-content/uploads/2020/05/kinh-can.png);
+    width: 550px;
+    height: 200px;
+    background-size: cover;
+    position: relative;
+
+
+}
+
+.glasses a{
+    top: 45px;
+    right: 38px;    
+
+}
+
+.sunglasses a{
+    top: 45px;
+    right: 38px;    
+
+}
+
+.glasses .close {
+    top: 50px;
+    right: 38px;
+    position: absolute;
+  
+    text-align: center; 
+    display: flex;
+    flex-direction: column;
+   
+
+}
+
+.glasses .close h2{
+    color: #1E2022;
+    font-weight: bold;
+    font-size: 20px;
+
+}
+
+.glasses h3{
+
+    color: #1E2022;
+    
+}
+
+.sunglasses .ribbon {
+    top: 45px;
+    right: 20px;
+    position: absolute;
+    padding: 4px 8px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    
+}
+
+.sunglasses .ribbon h2{
+    color: #1E2022;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+
+
+.wrap-button a:first-child {
+    border: 1px solid #cdcdcd;
+    cursor: pointer;
+    background: #4872FA;
+    border-radius: 4px;
+    color: #fff;
+    margin-top: 3.5rem;
+    margin-right: 2px;
+    
+
+}
+
+
+
+.wrap-button a {
+     
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    padding: 0.5rem;
+    border-radius: 0.4rem;
+    gap: 2rem;
+    cursor: pointer;    
+    position: absolute;
+
+    
+    
+    
+}
+
+.wrap-button{
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+    text-align: center;
+
+}
+
+/* .wrap-button  a:hover{
+    background-color: orange;
+    
+} */
+
+/* .promotion{
+ 
+    width: 220rem;
+    height: 14rem;
+    background: url(https://kinhmateyeplus.com/wp-content/uploads/2020/06/kinhmateyeplus-hot-deal.jpg); 
+    background-size: cover;
+    position: relative;
+    
+
+  
+}
+
+
+
+/* .promotion .full{   
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    margin-top: 4rem;
+    color: #ffffff;
+    gap: 1.5rem;
+   
+} */
+
+    
+
+
+/* .promotion .full h2{
+    font-weight: bold;
+    font-size: 0.8rem;
+} */
+
+/* .promotion .full h3{
+    font-weight: bold;
+    font-size: 1.7rem;
+}
+
+
+.promotion-button a:first-child {
+    border: 1px solid #cdcdcd;
+    cursor: pointer;
+    background-color: #ffffff;;
+    border-radius: 4px;
+    color: #4872fa;
+  
+  
+
+}
+
+.
+
+.promotion-button  a:hover{
+    background-color: orange;
+} */ */
+
+
+
+.promotion-button a{
+    font-weight: 500;
+    border: none;
+    padding: 0.5rem;
+    border-radius: 0.4rem;
+    cursor: pointer;    
+    position: absolute;
+    
+   
+ 
+    
+}
+.promotion-button a:first-child {
+    border: 1px solid #cdcdcd;
+    cursor: pointer;
+    background-color: #ffffff;;
+    border-radius: 4px;
+    color: #4872fa;
+  
+  
+
+}
+.promotion-button  a:hover{
+    background-color: orange;
+}
+
+
+
+
+
+.fasion h3{
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: #1e2022;
+}
+    
+.icon{   
+    font-size: 12px;
+    line-height: 1.5rem;
+    
+}
+
+.seemore-buttton{
+    line-height: 40px;
+    padding: 0 30px;
+    background-color: #4872FA;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+* {
+    box-sizing: border-box;
+    list-style: none;
+    font-family: 'Open Sans', sans-serif;
+    text-decoration: none;
+}
+
+ul li,
+ol li {
+    list-style: none;
+}
+
+ul,
+ol,
+ul li,
+ol li {
+    margin: 0px;
+    padding: 0px;
+}
+
+html {
+    font-size: 14px;
+
+}
+
+
+
+footer .container{
+    padding-left: 20px;
+    padding-right: 20px;
+
+}
+
+
+footer{
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+}
+
+footer .category {
+    background: #222222;
+    padding-left: 30px;  
+    height: 6rem;
+}
+
+
+
+footer .category a {
+    color: #999999;
+    padding-right: 30px;
+}
+
+footer .link {
+    background: #222222;
+   
+}
+
+
+footer .link a {
+    color: #999999;
+}
