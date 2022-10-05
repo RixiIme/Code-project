@@ -12,9 +12,10 @@
        $rs = $this->pdo->query($sql);  
        return $rs->fetchAll(PDO::FETCH_OBJ);   
     }
+   
 
-    public function getListByCategoryId($categoryId,$limit=4){
-        $sql = "SELECT *,products.name as product_name,products.id as product_id,category.name as category_name FROM $this->tableName LEFT JOIN category ON products.category_id = category.id where products.category_id=$categoryId LIMIT 4";
+    public function getListByCategoryId($categoryId){
+        $sql = "SELECT *,products.name as product_name,products.id as product_id,category.name as category_name FROM $this->tableName LEFT JOIN category ON products.category_id = category.id where products.category_id=$categoryId LIMIT 8";
         $rs = $this->pdo->query($sql);  
         return $rs->fetchAll(PDO::FETCH_OBJ);   
     }
@@ -55,16 +56,20 @@
     }
     
     public function updateOne($id,$data){
-        $prp = $this->pdo->prepare("UPDATE $this->tableName SET name=:name,content=:content,image=:image,price=:price,category_id=:category_id WHERE id=:id");
+        
+        $prp = $this->pdo->prepare("UPDATE $this->tableName 
+        SET name=:name,content=:content,image=:image,price=:price,category_id=:category_id WHERE id=:id");
         $prp->bindParam(':name',$data['name']);
         $prp->bindParam(':content',$data['content']);
         $prp->bindParam(':price',$data['price']);
         $prp->bindParam(':image',$data['image']);
         $prp->bindParam(':category_id',$data['category_id']);
+        $prp->bindParam(':id',$id);
         try{
             $prp->execute();
             return true;
         }catch(Exception $e){
+            echo $e->getMessage();
             return false;
         }
     }

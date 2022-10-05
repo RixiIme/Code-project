@@ -1,14 +1,16 @@
-<?php 
- require_once '../../dals/UserDAL.php';
- $dal = new UserDAL();
- if(isset($_GET['action'])){
+<?php
+session_start();
+
+require_once '../../dals/UserDAL.php';
+$dal = new UserDAL();
+if (isset($_GET['action'])) {
     $id = $_GET['id'];
-   
-    if(is_numeric($id) && $_GET['action']=='delete'){
+
+    if (is_numeric($id) && $_GET['action'] == 'delete') {
         $dal->deleteOne($id);
     }
- }
- $list = $dal->getList();
+}
+$list = $dal->getList();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -30,9 +32,9 @@
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
     <link rel="stylesheet" href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css" />
-  
+
     <link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet">
-   
+
 
 </head>
 
@@ -43,6 +45,7 @@
         <nav aria-label="menu nav" class="bg-zinc-100	  h-auto w-full">
 
             <div class="flex flex-wrap items-center">
+
                 <div class="flex flex-shrink md:w-1/3 justify-center md:justify-start text-white">
 
                 </div>
@@ -56,25 +59,34 @@
 
                 <div class="flex w-full pt-2 content-center justify-between md:w-1/3 md:justify-end">
                     <ul class="list-reset flex justify-between flex-1 md:flex-none items-center">
-
-
                         <li class="flex-1 md:flex-none md:mr-3">
-                            <div class="relative inline-block">
-                                <button onclick="toggleDD('myDropdown')" class="drop-button text-green-600	 py-2 px-2"> <span class="pr-2"><i class="fa-solid fa-user"></i></i></span> Hi, User <svg class="h-3 fill-current inline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                                    </svg></button>
-                                <div id="myDropdown" class="dropdownlist absolute bg-gray-800 text-green-600	 right-0 mt-3 p-3 overflow-auto z-30 invisible">
-                                    <input type="text" class="drop-search p-2 text-gray-600" placeholder="Search.." id="myInput" onkeyup="filterDD('myDropdown','myInput')">
-                                    <a href="#" class="p-2 hover:bg-gray-800 text-green-600	 text-sm no-underline hover:no-underline block"><i class="fa fa-user fa-fw"></i> Profile</a>
-                                    <a href="#" class="p-2 hover:bg-gray-800 text-green-600	 text-sm no-underline hover:no-underline block"><i class="fa fa-cog fa-fw"></i> Settings</a>
-                                    <div class="border border-gray-800"></div>
-                                    <a href="#" class="p-2 hover:bg-gray-800 text-green-600	 text-sm no-underline hover:no-underline block"><i class="fas fa-sign-out-alt fa-fw"></i> Log Out</a>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
+                            <?php if (isset($_SESSION['admin'])) { ?>
+                                <div class="relative inline-block">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="pr-2"><i class="fa-solid fa-user"></i></i></span> Hi,<?php echo $_SESSION['admin']; ?>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#"><i class="fa fa-user fa-fw"></i> Profile</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="fa fa-cog fa-fw"></i> Settings</a></li>
+
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt fa-fw"></i> Log Out</li>
+                            </ul>
+                     
+
                 </div>
-            </div>
+            <?php
+                            } else { ?>
+                <div class="relative inline-block">
+                    <button onclick="toggleDD('myDropdown')" class="drop-button text-green-600	 py-2 px-2"> <span class="pr-2"><i class="fa-solid fa-user"></i></i></span> <a href="loginadmin.php">Login</a> <svg class="h-3 fill-current inline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                            <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                        </svg></button>
+
+                </div>
+            <?php
+                            }
+            ?>
+
 
 
         </nav>
@@ -86,7 +98,7 @@
             <div id="slidebars">
                 <ul class="mt-1">
                     <li style="border-top-left-radius:10px;border-top-right-radius:10px ;" class="p-3 border-bottom bg-green-400 text-white">
-                        <a class="text-1xl hover:text-white font-bold" href="">
+                        <a class="text-1xl hover:text-white font-bold" href="/Project/admin/admin.php">
                             <i class=" text-blue-800 fa-sharp fa-solid fa-house"></i> Home
                         </a>
                     </li>
@@ -125,45 +137,45 @@
 
             </div>
         </div>
-        
-        <div class="col-12 col-md-9 col-lg-10 p-2 flex flex-col	text-center w-8/12 ml-20  mt-2 ">
-        <div>
-                <h1 class="font-semibold pt-2 text-1xl	">DANH SÁCH USER</h1>
+
+        <div class="col-12 col-md-9 col-lg-10 p-2 flex flex-col	text-center w-10/12 p-4 ">
+            <div>
+                <h1 class="font-semibold pt-2 text-2xl">USER LIST</h1>
             </div>
-           
+
             <table class="table table-bordered border-success mt-3">
                 <thead class="bg-green-600 ">
                     <tr>
                         <th scope="col">ID</th>
                         <th scope="col">Email</th>
                         <th scope="col">Phone</th>
-                        <th colspan="2"class="" >Action</th>
+                        <th colspan="2" class="">Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach($list as $r): ?>
-                    <tr>
-                        <th scope="row"><?php echo $r->id; ?></th>
-                        <td><?php echo $r->email; ?></td>
-                        <td><?php echo $r->phone; ?></td>
-                        <td>
-                            <a class="btn btn-success"href="edit.php?id=<?php echo $r->id;?>">Edit</a>
-                        </td>
-                        <td >
-                        <a  onclick="return confirm ('Are you sure want to delete?')" class="btn btn-danger"href="action=delete&id=<?php echo $r->id; ?>">Delete</a>
-                        </td>
-                    </tr>
-                    <?php endforeach?>
-                    
-                    
+                    <?php foreach ($list as $r) : ?>
+                        <tr>
+                            <th scope="row"><?php echo $r->id; ?></th>
+                            <td><?php echo $r->email; ?></td>
+                            <td><?php echo $r->phone; ?></td>
+                            <td>
+                                <a class="btn btn-success" href="edit.php?id=<?php echo $r->id; ?>">Edit</a>
+                            </td>
+                            <td>
+                                <a onclick="return confirm ('Are you sure want to delete?')" class="btn btn-danger" href="action=delete&id=<?php echo $r->id; ?>">Delete</a>
+                            </td>
+                        </tr>
+                    <?php endforeach ?>
+
+
                 </tbody>
             </table>
             <div>
-            <a class="bg-green-600 rounded-md border-yellow-700	p-2 text-white "   href="add.php">Add</a>
+                <a class="bg-green-600 rounded-md 	py-2 px-3 text-white " href="add.php">Add</a>
             </div>
         </div>
-        
-     
+
+
     </div>
 
 

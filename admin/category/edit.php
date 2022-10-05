@@ -8,13 +8,15 @@ $dal = new CategoryDAL();
 
 if (isset($_POST['name'])) {
     $checked = $dal->updateOne($id, $_POST);
-    if ($checked) {
+    if ($checked) { 
 
         $_SESSION['add-status'] = [
             'success' => 1,
             'message' => 'Edit successfully'
         ];
-    } else {
+      
+    } 
+    else {
         $_SESSION['add-status'] = [
             'success' => 0,
             'message' => 'Edit failed'
@@ -58,13 +60,12 @@ $obj = $dal->getOne($id);
 
     <header>
         <!--Nav-->
-        <nav aria-label="menu nav" class="bg-zinc-100	  h-auto w-full">
+        <nav aria-label="menu nav" class="bg-zinc-100 h-auto w-full">
 
             <div class="flex flex-wrap items-center">
                 <div class="flex flex-shrink md:w-1/3 justify-center md:justify-start text-white">
 
                 </div>
-
                 <div class="flex flex-1 md:w-1/3 justify-center md:justify-start text-white px-2">
                     <form class="d-flex" role="search">
                         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
@@ -74,25 +75,33 @@ $obj = $dal->getOne($id);
 
                 <div class="flex w-full pt-2 content-center justify-between md:w-1/3 md:justify-end">
                     <ul class="list-reset flex justify-between flex-1 md:flex-none items-center">
-
-
                         <li class="flex-1 md:flex-none md:mr-3">
-                            <div class="relative inline-block">
-                                <button onclick="toggleDD('myDropdown')" class="drop-button text-green-600	 py-2 px-2"> <span class="pr-2"><i class="fa-solid fa-user"></i></i></span> Hi, User <svg class="h-3 fill-current inline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                                    </svg></button>
-                                <div id="myDropdown" class="dropdownlist absolute bg-gray-800 text-green-600	 right-0 mt-3 p-3 overflow-auto z-30 invisible">
-                                    <input type="text" class="drop-search p-2 text-gray-600" placeholder="Search.." id="myInput" onkeyup="filterDD('myDropdown','myInput')">
-                                    <a href="#" class="p-2 hover:bg-gray-800 text-green-600	 text-sm no-underline hover:no-underline block"><i class="fa fa-user fa-fw"></i> Profile</a>
-                                    <a href="#" class="p-2 hover:bg-gray-800 text-green-600	 text-sm no-underline hover:no-underline block"><i class="fa fa-cog fa-fw"></i> Settings</a>
-                                    <div class="border border-gray-800"></div>
-                                    <a href="#" class="p-2 hover:bg-gray-800 text-green-600	 text-sm no-underline hover:no-underline block"><i class="fas fa-sign-out-alt fa-fw"></i> Log Out</a>
-                                </div>
-                            </div>
+                            <?php if (isset($_SESSION['admin'])) { ?>
+                                <div class="relative inline-block">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="pr-2"><i class="fa-solid fa-user"></i></i></span> Hi,<?php echo $_SESSION['admin']; ?>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#"><i class="fa fa-user fa-fw"></i> Profile</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="fa fa-cog fa-fw"></i> Settings</a></li>
+
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt fa-fw"></i> Log Out</li>
+                            </ul>
                         </li>
-                    </ul>
+
                 </div>
-            </div>
+            <?php
+                            } else { ?>
+                <div class="relative inline-block">
+                    <button onclick="toggleDD('myDropdown')" class="drop-button text-green-600	 py-2 px-2"> <span class="pr-2"><i class="fa-solid fa-user"></i></i></span> <a href="loginadmin.php">Login</a> <svg class="h-3 fill-current inline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                            <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                        </svg></button>
+
+                </div>
+            <?php
+                            }
+            ?>
 
 
         </nav>
@@ -104,8 +113,8 @@ $obj = $dal->getOne($id);
             <div id="slidebars">
                 <ul class="mt-1">
                     <li style="border-top-left-radius:10px;border-top-right-radius:10px ;" class="p-3 border-bottom bg-green-400 text-white">
-                        <a class="text-1xl hover:text-white font-bold" href="">
-                            <i class=" text-blue-800 fa-sharp fa-solid fa-house"></i> Home
+                        <a class="text-1xl hover:text-white font-bold" href="/Project/admin/admin.php">
+                            <i class=" text-blue-800 fa-sharp fa-solid fa-house"></i>Home
                         </a>
                     </li>
 
@@ -144,7 +153,7 @@ $obj = $dal->getOne($id);
 
             </div>
         </div>
-        <div class="col-12 col-md-9 col-lg-10 p-2 flex text-center ">
+        <div class="col-12 col-md-9 col-lg-10 p-2  ">
             <?php
             if (isset($_SESSION['add-status'])) {
                 if ($_SESSION['add-status']['success'] == 1) {
@@ -154,14 +163,14 @@ $obj = $dal->getOne($id);
                 } else {
                     echo '<div class="alert alert-danger" role="alert">
                     ' . $_SESSION['add-status']['message'] . '
-                  </div>';
+                  </div>';  
                 }
                 unset($_SESSION['add-status']);
             }
             ?>
-            <form method="post">
+            <form method="POST" enctype="multipart/form-data">
 
-                <div class="mb-3">
+                <div class="mb-3 w-25">
                     <label for="name" class="form-label">Name</label>
                     <input type="name" required class="form-control" value="<?php echo $obj->name; ?>" name="name" id="name">
                 </div>

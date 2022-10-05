@@ -1,55 +1,17 @@
 <?php
 session_start();
-if (isset($_GET['id']) && is_numeric($_GET['id'])) {
+
+require_once '../../dals/UserDAL.php';
+$dal = new UserDAL();
+if (isset($_GET['action'])) {
     $id = $_GET['id'];
-    require_once  '../../dals/ProductDAL.php';
-    require_once  '../../dals/CategoryDAL.php';
-    $dal = new ProductDAL();
-    $cat = new CategoryDAL();
 
-
-
-
-
-    if (isset($_POST['name'])) { 
-        if (isset($_FILES['image']) && $_FILES['image']['name'] != null && isset($_POST['name'])) {
-            echo "a";
-            $newDir  = date('m') . '-' . date('Y'); 
-            $relativeDir = '../../uploads/' . $newDir;
-            $newDir = $relativeDir;
-            if (!file_exists($newDir) || is_file($newDir)) {
-                mkdir($newDir);
-                
-            }
-            $imageName = time() . $_FILES['image']['name'];
-            $fullImagePath = $newDir . '/' . $imageName;
-            move_uploaded_file($_FILES['image']['tmp_name'], $fullImagePath);
-            $data = $_POST;
-            $data['image'] = $relativeDir . '/' . $imageName;
-        $checked = $dal->updateOne($id, $data);
-        
-        if ($checked) {
-
-            $_SESSION['add-status'] = [
-                'success' => 1,
-                'message' => 'Edit successfully'
-            ];
-        } else {
-            $_SESSION['add-status'] = [
-                'success' => 0,
-                'message' => 'Edit failed'
-            ];
-        }
+    if (is_numeric($id) && $_GET['action'] == 'delete') {
+        $dal->deleteOne($id);
     }
-    }
-} else {
-    header("location:list.php");
 }
-$obj = $dal->getOne($id);
-
+$list = $dal->getList();
 ?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -70,9 +32,9 @@ $obj = $dal->getOne($id);
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
     <link rel="stylesheet" href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css" />
-    <!--Replace with your tailwind.css once created-->
+
     <link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet">
-    <!--Totally optional :) -->
+
 
 </head>
 
@@ -83,6 +45,7 @@ $obj = $dal->getOne($id);
         <nav aria-label="menu nav" class="bg-zinc-100	  h-auto w-full">
 
             <div class="flex flex-wrap items-center">
+
                 <div class="flex flex-shrink md:w-1/3 justify-center md:justify-start text-white">
 
                 </div>
@@ -109,7 +72,7 @@ $obj = $dal->getOne($id);
 
                                 <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt fa-fw"></i> Log Out</li>
                             </ul>
-                        </li>
+                     
 
                 </div>
             <?php
@@ -135,10 +98,11 @@ $obj = $dal->getOne($id);
             <div id="slidebars">
                 <ul class="mt-1">
                     <li style="border-top-left-radius:10px;border-top-right-radius:10px ;" class="p-3 border-bottom bg-green-400 text-white">
-                        <a class="text-1xl hover:text-white font-bold" href="/Project/admin/admin.php">
+                        <a class="text-1xl hover:text-white font-bold" href="">
                             <i class=" text-blue-800 fa-sharp fa-solid fa-house"></i> Home
                         </a>
                     </li>
+
                     <li class="p-3 border-bottom hover:bg-green-400 hover:text-white">
                         <a class="text-1xl hover:text-white " href=" /Project/admin/user/list.php">
                             <i class="text-green-800 fa-solid fa-user"></i> User
@@ -157,7 +121,6 @@ $obj = $dal->getOne($id);
                         </a>
                     </li>
 
-
                     <li class="p-3 border-bottom hover:bg-green-400 hover:text-white">
                         <a class="text-1xl hover:text-white " href="./cart/list.php">
                             <i class="text-green-800 fa-solid fa-feather"></i> Order
@@ -175,62 +138,47 @@ $obj = $dal->getOne($id);
             </div>
         </div>
 
+        <div class="col-12 col-md-9 col-lg-10 p-2 flex flex-col	text-center w-8/12 ml-20  mt-2 ">
+            <div>
+                <h1 class="font-semibold pt-2 text-2xl">USER LIST</h1>
+            </div>
 
-        <div class="col-12 col-md-9 col-lg-10 p-2">
-            <?php
-            if (isset($_SESSION['add-status'])) {
-                if ($_SESSION['add-status']['success'] == 1) {
-                    echo '<div class="alert alert-success" role="alert">
-                    ' . $_SESSION['add-status']['message'] . '
-                  </div>';
-                } else {
-                    echo '<div class="alert alert-danger" role="alert">
-                    ' . $_SESSION['add-status']['message'] . '
-                  </div>';
-                }
-                unset($_SESSION['add-status']);
-            }
-            ?>
-            <form method="POST" enctype="multipart/form-data">
-
-                <div class="mb-3">
-                    <label for="image" class="form-label">Image</label>
-                    <img src="<?php echo $obj->image; ?>" alt="" width="150">
-                    <input type="file" required class="form-control" name="image" id="image">
-                </div>
-                <div class="mb-3">
-                    <label for="name" class="form-label">Name</label>
-                    <input type="name" required class="form-control" value="<?php echo $obj->name; ?>" name="name" id="name">
-                </div >
-                <div>
-                    <label for="price" class="form-label">Price</label>
-                    <input type="text" required class="form-control" value="<?php echo $obj->price; ?>" name="price" id="price">
-                </div>
-                <div>
-                    <label for="content" class="form-label">Content</label>
-                    <input type="text" required class="form-control" value="<?php echo $obj->content; ?>" name="content" id="content">
-                </div>
-                <div class="my-2">
-                    <h3 class="my-2" >Category</h3>
-                    <select name="category_id" id="category_id">
-                        <?php $rs = $cat->getList();
-                        foreach ($rs as $value) {
-                        ?>
-                            <option value="<?php echo $value->id?>"><?php echo $value->name ?></option>
+            <table class="table table-bordered border-success mt-3">
+                <thead class="bg-green-600 ">
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Phone</th>
+                        <th colspan="2" class="">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($list as $r) : ?>
+                        <tr>
+                            <th scope="row"><?php echo $r->id; ?></th>
+                            <td><?php echo $r->email; ?></td>
+                            <td><?php echo $r->phone; ?></td>
+                            <td>
+                                <a class="btn btn-success" href="edit.php?id=<?php echo $r->id; ?>">Edit</a>
+                            </td>
+                            <td>
+                                <a onclick="return confirm ('Are you sure want to delete?')" class="btn btn-danger" href="action=delete&id=<?php echo $r->id; ?>">Delete</a>
+                            </td>
+                        </tr>
+                    <?php endforeach ?>
 
 
-                        <?php
-                        }
-                        ?>
-
-                    </select>
-
-                </div>
-                <div>
-                    <button class="btn btn-primary">Edit</button>
-                </div>
-            </form>
+                </tbody>
+            </table>
+            <div>
+                <a class="bg-green-600 rounded-md 	py-2 px-3 text-white " href="add.php">Add</a>
+            </div>
         </div>
+
+
+    </div>
+
+
 
     </div>
 </body>

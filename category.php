@@ -1,3 +1,14 @@
+<?php 
+session_start();
+
+ require_once 'dals/ProductDAL.php';
+ require_once 'config.php';
+ $productDAL = new ProductDAL();
+ if(isset($_GET['action'])){
+    $id = $_GET['id'];   
+ }
+ $list = $productDAL->getList();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -38,30 +49,19 @@
               </button>
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav m-auto mb-2 mb-lg-0 ">
-                  <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="category.html">Sunglasses</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link active  md:px-3" aria-current="page" href="category.html">Eyeglass Frames</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="category.html">Lenses</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link active  md:px-3" aria-current="page" href="category.html">Close-up Sunglasses</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="category.html">Genuine Glasses</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#"><i class="bi bi-facebook text-blue-600"></i></a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#"><i class="bi bi-instagram text-pink-600"></i></a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#"><i class="bi bi-youtube text-red-600"></i></a>
-                  </li>
+                    <?php include_once 'dals/CategoryDAL.php';
+                    $categoryDAL = new CategoryDAL();
+                    $categoryList= $categoryDAL->getList();
+                    foreach($categoryList as $category){
+                        ?>
+                        <li class="nav-item">
+                          <a class="nav-link active" aria-current="page" href="category.php?id=<?php echo $category->id ?>"><?php echo $category->name ?></a>
+                        </li>
+                        
+                        <?php
+                    }
+                    ?>
+                
                 </ul>
                 <div>
                     <ul class="d-flex">
@@ -85,21 +85,32 @@
                 <h1 class="mb-3">GENUINE RAYBAN GLASSES </h1>
             </div>
         </div>
-        <div class="container text-center" >
+        <?php
+      foreach ($categoryList as $category) :
+      ?>    
+      <?php $productList = $productDAL->getListByCategoryId($category->id); ?>
+      <?php if(count($productList)==8){ ?>
+        <h3 class="font-bold text-3xl mt-12"> <?php echo $category->name; ?></h3>
+        <div class="container text-center" > 
             <div class="row">
                 <div class="col-6 col-sm-3">
+                <?php foreach ($productList as $product) : ?>
                     <img src="https://kinhmateyeplus.com/wp-content/uploads/2022/04/4-7-600x600.jpg" alt="">
                     <div class="p-3">
                         <div class="hover:text-blue-600">
-                            GENUINE RAYBAN GLASS 7149D  
+                        <?php echo $product->product_name; ?>
                         </div>
                         <div class="font-black	 text-orange-600">
-                            2.360.000 Đ
+                        <?php echo $product->price; ?>
                         </div>
+                        <?php endforeach ?>
                     </div>
+                    <?php }?>
 
+                    <?php endforeach; ?>
+                   
                 </div>
-                <div class="col-6 col-sm-3">
+                <!-- <div class="col-6 col-sm-3">
                     <img src="https://kinhmateyeplus.com/wp-content/uploads/2022/04/4-6-600x600.jpg" alt="">
                     <div class="p-3">
                         <div class="hover:text-blue-600">
@@ -278,7 +289,7 @@
                     </div>
 
                 </div>  
-            </div>
+            </div> -->
             <!--  -->
             
         </div>
